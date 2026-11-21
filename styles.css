@@ -152,6 +152,7 @@ button, input, select, textarea { font-family: inherit; }
 /* ── 상단 바 ─────────────────────────────────────── */
 .topbar {
   position: sticky; top: 0; z-index: 40;
+  background: var(--bg);
   background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: saturate(120%) blur(12px);
   -webkit-backdrop-filter: saturate(120%) blur(12px);
@@ -455,6 +456,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 24px 24px 64px; }
 .chip .chip-n { font-size: 10px; font-weight: 800; color: var(--ink-4); font-variant-numeric: tabular-nums; letter-spacing: 0; }
 .chip.is-on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 [data-theme="dark"] .chip.is-on { background: var(--ink); color: #0C0D0F; border-color: var(--ink); }
+.chip.is-on .chip-n { color: rgba(250, 250, 250, .74); }
 .chip.is-on .chip-n { color: color-mix(in srgb, var(--bg) 74%, transparent); }
 .chip.is-on .chip-dot { background: currentColor; }
 .board-meta { font-size: 11.5px; color: var(--ink-4); margin-bottom: 12px; }
@@ -715,6 +717,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 24px 24px 64px; }
 .modal-head {
   position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 12px;
   padding: 18px 20px; border-bottom: 1px solid var(--line);
+  background: var(--surface);
   background: color-mix(in srgb, var(--surface) 94%, transparent);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
