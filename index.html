@@ -5,10 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>체험단 매칭 보드 — 모집 공고·지원자 관리·성과(CPV·ROI)</title>
 <meta name="description" content="제품과 혜택만 넣으면 모집 공고문·선정 안내 DM/메일·공정위 대가성 문구가 1분 만에 나옵니다. 카피 심리학 8대 트리거 진단·추상어 교정·PAS·BAB·AIDA·4U 도입부, ChatGPT·Claude·Gemini 원클릭 브리지, 지원자 칸반 관리, CPV·ROI와 광고주 리포트까지. 서버 없이 브라우저에만 저장됩니다." />
-<meta name="theme-color" content="#ffffff" />
+<meta name="theme-color" content="#FAFAFA" />
 <meta name="color-scheme" content="light dark" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://marcj81.github.io/influencer-campaign-board/" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="assets/fonts/plexkr-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/plexkr-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/plexkr-Bold.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="styles.css" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="체험단 매칭 보드" />
+<meta property="og:title" content="체험단 매칭 보드 — 모집 공고·지원자 관리·성과(CPV·ROI)" />
+<meta property="og:description" content="제품과 혜택만 넣으면 모집 공고문·선정 안내 DM·메일·공정위 대가성 문구가 1분 만에 나옵니다. 지원자 칸반, CPV·ROI 리포트까지 서버 없이 브라우저에서만." />
+<meta property="og:url" content="https://marcj81.github.io/influencer-campaign-board/" />
 </head>
 <body>
 <a class="skip-link" href="#main">본문으로 바로가기</a>
@@ -17,15 +28,12 @@
   <div class="topbar-inner">
     <a class="brand" href="#" data-action="go-board" aria-label="체험단 매칭 보드 홈">
       <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 40 40" width="34" height="34">
-          <defs>
-            <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#ff7a3d" /><stop offset="1" stop-color="#e81f5a" />
-            </linearGradient>
-          </defs>
-          <rect x="1" y="1" width="38" height="38" rx="11" fill="url(#brandGrad)" />
-          <path d="M17.2 23.4l-1.7 1.7a4.7 4.7 0 0 1-6.6-6.6l3.4-3.4a4.7 4.7 0 0 1 6.6 0" fill="none" stroke="#fff" stroke-opacity=".62" stroke-width="2.2" stroke-linecap="round" />
-          <path d="M22.8 16.6l1.7-1.7a4.7 4.7 0 0 1 6.6 6.6l-3.4 3.4a4.7 4.7 0 0 1-6.6 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" />
+        <svg viewBox="0 0 40 40" width="32" height="32">
+          <rect class="bm-bg" x="1" y="1" width="38" height="38" rx="11" />
+          <rect class="bm-tile" x="9.6" y="9.6" width="8.8" height="8.8" rx="2.8" />
+          <rect class="bm-tile bm-acc" x="21.6" y="9.6" width="8.8" height="8.8" rx="2.8" />
+          <rect class="bm-tile" x="9.6" y="21.6" width="8.8" height="8.8" rx="2.8" />
+          <rect class="bm-tile" x="21.6" y="21.6" width="8.8" height="8.8" rx="2.8" />
         </svg>
       </span>
       <span class="brand-text">
@@ -39,6 +47,8 @@
       <button class="tab is-active" role="tab" aria-selected="true" data-tab="board">지원자 보드<span class="tab-count" id="tabBoardCount">12</span></button>
       <button class="tab" role="tab" aria-selected="false" data-tab="stats">성과 대시보드</button>
     </nav>
+
+    <span class="live" aria-hidden="true"><i></i>서버 전송 0건</span>
 
     <div class="top-actions">
       <button type="button" class="icon-btn" data-action="toggle-theme" aria-label="다크 모드로 전환" title="라이트/다크">

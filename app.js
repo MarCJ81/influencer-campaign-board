@@ -1099,7 +1099,7 @@
           '<span class="r">' + C.formatWonShort(c.cost) + '</span>' +
           '<span class="r"><b>' + C.formatCount(c.views) + '</b></span>' +
           '<span class="r">' + C.formatCpv(c.cpv) + '</span></div>' +
-          '<div class="bar-row" style="grid-template-columns:1fr;padding:0 0 7px"><span class="bar-track"><i class="bar-fill" style="width:' + Math.round((c.views / maxViews) * 100) + '%;background:linear-gradient(90deg,' + c.color + '99,' + c.color + ')"></i></span></div>'
+          '<div class="bar-row" style="grid-template-columns:1fr;padding:0 0 7px"><span class="bar-track"><i class="bar-fill" style="width:' + Math.round((c.views / maxViews) * 100) + '%"></i></span></div>'
         ).join('') +
       '</div>';
 
@@ -1108,7 +1108,7 @@
     $('#funnelPanel').innerHTML = panelHead('진행 단계', '12명 중 어디에 몰려 있는지') +
       '<div class="funnel">' + stages.map((st) =>
         '<div class="funnel-row"><span class="fl"><span class="chip-dot" style="--c:' + st.color + '"></span>' + st.short + '</span>' +
-        '<span class="funnel-track"><i class="funnel-fill" style="--c:' + st.color + ';width:' + Math.max(4, Math.round((st.count / maxCount) * 100)) + '%"></i></span>' +
+        '<span class="funnel-track"><i class="funnel-fill" style="width:' + Math.max(4, Math.round((st.count / maxCount) * 100)) + '%"></i></span>' +
         '<span class="fc">' + st.count + '명 <small>' + (st.cost ? C.formatWonShort(st.cost) : '') + '</small></span></div>'
       ).join('') + '</div>';
 

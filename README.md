@@ -3,9 +3,11 @@
 브랜드·대행사·셀러가 **체험단 모집 공고 → 지원자 선정 → 제품 발송 → 리뷰 마감 → 성과(CPV·ROI)** 를 한 화면에서 처리하는 무서버 정적 웹앱.
 
 - 빌드 없음 · 서버 없음 · 계정 없음 · 외부 요청 0건 · 데이터는 브라우저 `localStorage`에만
-- 떡상 레이더(`../shortform-radar/`)와 같은 패밀리 룩: IBM Plex Sans KR, 라이트/다크, 반응형
+- **디자인: A안 — Crisp Bento SaaS**(2026-11 Pinterest UI 리서치 기반). 순백 카드 · 1px `#E7E8EA` 보더 · 16px 라운드 · 잉크 `#0C0D0F` · **코발트 `#2F5BFF` 단일 액센트** · 산세리프 800 헤드라인. 본문 대비 4.5:1 이상, 다크 모드는 잉크 캔버스로 같은 규칙을 유지한다.
+- 로컬 폰트(IBM Plex Sans KR woff2 3종) · 인라인 SVG만 사용 — 런타임 외부 요청 0건
 - 미리보기: `preview-desktop.png` (보드 1440×900), `preview-mobile.png` (390×844), `preview-brief.png` (공고 생성기), `preview-stats.png` (성과 대시보드), `preview-dark.png` (다크 모드), `preview-mobile-stats.png` (모바일 대시보드), `preview-upgraded.png` (카피 심리학·도입부), `preview-ai-bridge.png` (AI 브리지)
 - 업그레이드(2026-11-21): **카피·심리학 엔진**으로 공고문·DM·메일·가이드의 8대 트리거 점수와 추상어·공급자어 교정, **PAS·BAB·AIDA·4U 도입부** 제안, **내 구독 AI 원클릭 브리지**(ChatGPT·Claude·Gemini, 무료 Gemini 키 선택)로 공고 다듬기·광고주 성과 리포트
+- 리디자인(2026-11-22): A안 화이트 벤토 — 화면 구조·기능·저장 키(`amb.v1.*`)는 그대로, 스킨과 컴포넌트만 교체. `node test.js` 546건 · `python3 uitest.py` 283건 · `python3 livetest.py`(실서버) 전수 통과
 
 ---
 
@@ -173,7 +175,7 @@ python3 uitest.py     # 실제 Chrome 데스크톱(1440×900)·모바일(390×84
 
 ```
 index.html      화면 골격(탭·캠페인 스트립·3개 뷰·심리 진단·도입부·AI 브리지·리포트)
-styles.css      라이트/다크 디자인 시스템, 칸반·리스트·대시보드, 심리·AI·리포트 패널
+styles.css      A안 디자인 시스템(토큰·컴포넌트), 칸반·리스트·대시보드, 심리·AI·리포트 패널
 core.js         순수 로직: 포맷·공고문 생성·지원자·CSV·성과 계산, 심리 가중치·리포트·AI 프롬프트·답변 검사
 engines/        copy-psych-engine.js(공용 그대로) · ai-bridge.js(공용 그대로) — 폴더째 복사해도 동작
 data.js         데모 캠페인 + 지원자 12명
