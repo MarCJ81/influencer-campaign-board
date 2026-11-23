@@ -261,10 +261,13 @@
       <pre class="prompt-box" id="aiPromptBox" tabindex="0"></pre>
       <div class="prompt-actions">
         <button type="button" class="btn btn-primary btn-sm" data-action="copy-ai-prompt" data-mode="brief">프롬프트 복사</button>
+        <button type="button" class="btn btn-primary btn-sm" data-action="free-generate" data-mode="brief">키 없이 무료로 생성</button>
         <label class="check"><input type="checkbox" id="aiPersonal" /> 지원자 이름·핸들 포함 <span class="muted">(기본은 익명 처리)</span></label>
       </div>
       <div class="bridge-btns" id="aiBridgeBtns"></div>
       <p class="bridge-note" id="aiBridgeNote"></p>
+      <p class="form-note free-status" id="freeStatus">키를 넣지 않아도 하루 몇 회(기기 기준) 공고문 초안을 받아 볼 수 있습니다. 다 쓰면 내 무료 Gemini 키로 이어집니다.</p>
+      <div id="freeCard"></div>
 
       <div class="ai-answer">
         <label for="aiAnswer">AI가 준 공고문 붙여넣기</label>
@@ -375,6 +378,14 @@
       <div class="summary" id="statsSummary"></div>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
+    <div class="panel" id="chartPanel" hidden>
+      <div class="panel-head">
+        <h2>채널별 조회수·CPV</h2>
+        <span class="muted" id="chartMeta"></span>
+      </div>
+      <div class="chart-wrap"><canvas id="channelChart" height="250" role="img" aria-label="채널별 조회수 막대와 CPV 선 그래프"></canvas></div>
+      <p class="form-note">막대는 채널별 조회수, 오른쪽 축 선은 조회당 단가(CPV)입니다. CPV가 낮을수록 같은 돈으로 더 많이 봤다는 뜻입니다.</p>
+    </div>
     <div class="stats-row">
       <div class="panel" id="calcPanel"></div>
       <div class="panel" id="channelPanel"></div>
@@ -410,6 +421,11 @@
         </div>
         <div class="bridge-btns" id="repBridgeBtns"></div>
         <p class="bridge-note" id="repBridgeNote"></p>
+        <div class="prompt-actions">
+          <button type="button" class="btn btn-primary btn-sm" data-action="free-generate" data-mode="report">키 없이 무료로 생성</button>
+          <span class="form-note" id="repFreeStatus">무료 체험으로 광고주용 리포트 초안을 바로 받아 볼 수 있습니다.</span>
+        </div>
+        <div id="repFreeCard"></div>
         <label for="repAnswer">AI가 준 리포트 붙여넣기</label>
         <textarea id="repAnswer" rows="6" spellcheck="false" placeholder="ChatGPT·Claude·Gemini가 쓴 리포트를 붙여넣으세요."></textarea>
         <div class="ai-draft-meta" id="repAnswerMeta">붙여넣으면 원본에 없는 숫자가 있는지 검사합니다.</div>
@@ -450,6 +466,11 @@
 
 <script src="engines/copy-psych-engine.js"></script>
 <script src="engines/ai-bridge.js"></script>
+<!-- 오픈소스 엔진: SortableJS(MIT) 칸반 드래그 · Chart.js(MIT) 성과 차트 -->
+<script src="assets/vendor/sortable.min.js"></script>
+<script src="assets/vendor/chart.umd.min.js"></script>
+<script src="engines/board-engine.js"></script>
+<script src="engines/pro-api-connector.js"></script>
 <script src="core.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>

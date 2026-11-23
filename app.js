@@ -9,6 +9,9 @@
   const D = window.DATA;
   const CP = window.CopyPsych || null;   // engines/copy-psych-engine.js
   const B = window.AiBridge || null;     // engines/ai-bridge.js
+  const BE = window.BoardEngine || null; // engines/board-engine.js (SortableJS·Chart.js)
+  const Pro = window.ProConnector || null; // engines/pro-api-connector.js (무료 AI 맛보기)
+  const FREE_APP = 'influencer-campaign-board';
   const LS = {
     brief: 'amb.v1.brief',
     applicants: 'amb.v1.applicants',
@@ -35,6 +38,7 @@
     introBuilt: null,
     aiPrompts: { brief: null, report: null },
     geminiBusy: false,
+    freeBusy: false,
     ai: {
       docs: { posting: '', dm: '', email: '', guide: '' },
       report: '',
@@ -93,6 +97,26 @@
   function saveApplicants() {
     writeJson(LS.applicants, state.applicants);
     renderReport();
+  }
+
+  /** 채널별 조회수·CPV 차트 (Chart.js). 채널이 1곳뿐이면 숨긴다. */
+  function renderChannelChart(chans) {
+    const panel = $('#chartPanel');
+    const canvas = $('#channelChart');
+    if (!panel) return;
+    if (!BE || !BE.hasChart || !BE.drawChannelChart || !chans || chans.length < 2) {
+      panel.hidden = true;
+      if (BE && BE.destroy) BE.destroy('channelChart');
+      return;
+    }
+    panel.hidden = false;
+    const meta = $('#chartMeta');
+    if (meta) meta.textContent = chans.length + '개 채널 · 막대 조회수 · 선 CPV';
+    try {
+      BE.drawChannelChart(canvas, chans.map((c) => ({ short: c.short, views: c.views, cpv: c.cpv, count: c.count })));
+    } catch (e) {
+      panel.hidden = true;
+    }
   }
   function savePrefs() {
     writeJson(LS.prefs, state.prefs);
@@ -690,6 +714,55 @@
     fillGeminiInputs();
   }
 
+  /** 무료 AI 맛보기 — 키 없이 공고문·리포트 초안을 받는다. */
+  async function freeGenerate(mode) {
+    const isReport = mode === 'report';
+    const status = $(isReport ? '#repFreeStatus' : '#freeStatus');
+    const cardBox = $(isReport ? '#repFreeCard' : '#freeCard');
+    if (!Pro) {
+      if (status) { status.className = 'form-error'; status.textContent = '무료 AI 엔진을 불러오지 못했어요. engines/pro-api-connector.js를 확인하세요.'; }
+      return;
+    }
+    if (state.freeBusy) return;
+    const btn = $('[data-action="free-generate"][data-mode="' + mode + '"]');
+    if (btn) btn.disabled = true;
+    state.freeBusy = true;
+    if (cardBox) cardBox.innerHTML = '';
+    if (status) { status.className = 'muted'; status.textContent = '무료 체험으로 생성 중… (10~30초)'; }
+    const p = state.aiPrompts[mode] || promptFor(mode);
+    try {
+      const res = await Pro.generateFree({
+        task: 'text', prompt: p.prompt, system: p.system,
+      }, { app: FREE_APP, truncate: true, timeoutMs: 45000 });
+      if (res.ok) {
+        $(isReport ? '#repAnswer' : '#aiAnswer').value = res.text;
+        renderAnswer(mode);
+        const left = res.quota ? ' · 남은 ' + res.quota.remaining + '/' + res.quota.limit + '회' : '';
+        if (status) {
+          status.className = 'muted';
+          status.textContent = (isReport ? '리포트' : '공고문') + '을 무료 체험으로 받았어요' + left +
+            (res.truncated ? ' · 2,000자 제한으로 프롬프트를 줄였습니다' : '') + '. 아래 [적용] 전에 미리 점검을 확인하세요.';
+        }
+        toast('무료 체험으로 ' + (isReport ? '리포트' : '공고문') + '을 받았어요.');
+      } else if (res.upgrade) {
+        if (status) { status.className = 'form-error'; status.textContent = res.message; }
+        if (cardBox && Pro.freeLimitCard) {
+          const c = Pro.freeLimitCard(res);
+          cardBox.innerHTML = '<div class="free-card"><b>' + esc(c.title) + '</b><p>' + esc(c.body) + '</p>' +
+            '<a href="' + esc(c.primary.href) + '" target="_blank" rel="noopener noreferrer">' + esc(c.primary.label) + ' ↗</a></div>';
+        }
+      } else if (status) {
+        status.className = 'form-error';
+        status.textContent = res.message || '무료 체험에 실패했어요.';
+      }
+    } catch (e) {
+      if (status) { status.className = 'form-error'; status.textContent = '무료 체험에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.'; }
+    } finally {
+      state.freeBusy = false;
+      if (btn) btn.disabled = false;
+    }
+  }
+
   async function geminiGenerate(mode) {
     const cfg = BRIDGE[mode];
     const status = $(cfg.status);
@@ -980,6 +1053,24 @@
         '</div>' +
       '</section>';
     }).join('');
+    mountKanbanSortable();
+  }
+
+  /** SortableJS 로 칸반을 다시 묶는다(터치·모바일 드래그 안정화). */
+  function mountKanbanSortable() {
+    if (!BE || !BE.hasSortable) return false;
+    const root = $('#kanban');
+    if (!root) return false;
+    return BE.mountColumns(root, {
+      onMove(id, stage) {
+        if (!id || !stage) return;
+        state.applicants = C.moveApplicant(state.applicants, id, stage);
+        saveApplicants();
+        renderBoard();
+        renderCampaignBar();
+        toast('단계를 옮겼습니다 · ' + C.stageLabel(stage));
+      },
+    });
   }
 
   function renderList(rows) {
@@ -1140,6 +1231,7 @@
           '</tbody></table></div>'
         : '<p class="due-empty">아직 실측 조회수가 없습니다. 지원자 상세에서 리뷰 조회수를 넣거나 리뷰 단계로 옮기면 여기에 효율 순위가 나옵니다.</p>');
 
+    renderChannelChart(chans);
     renderReport();
   }
 
@@ -1448,6 +1540,10 @@
         if (action === 'clear-ai-answer') { clearAnswer('brief'); return; }
         if (action === 'apply-rep-answer') { applyRepAnswer(); return; }
         if (action === 'clear-rep-answer') { clearAnswer('report'); return; }
+        if (action === 'free-generate') {
+          freeGenerate(actionEl.dataset.mode === 'report' ? 'report' : 'brief');
+          return;
+        }
         if (action === 'gemini-generate') {
           geminiGenerate(actionEl.dataset.mode === 'report' ? 'report' : 'brief');
           return;
@@ -1725,9 +1821,10 @@
       }
     });
 
-    /* 드래그앤드롭 */
+    /* 드래그앤드롭 — SortableJS 가 붙어 있으면 그쪽이 처리한다(중복 이동 방지). */
     let dragId = null;
     document.addEventListener('dragstart', (e) => {
+      if (BE && BE.isMounted && BE.isMounted()) return;
       const card = e.target.closest('.kcard');
       if (!card) return;
       dragId = card.dataset.id;
@@ -1756,6 +1853,7 @@
       if (col && !col.contains(e.relatedTarget)) col.classList.remove('is-over');
     });
     document.addEventListener('drop', (e) => {
+      if (BE && BE.isMounted && BE.isMounted()) return;
       const col = e.target.closest('.col');
       if (!col) return;
       e.preventDefault();

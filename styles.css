@@ -1131,3 +1131,29 @@ label.flabel { display: block; font-size: 11px; font-weight: 700; color: var(--i
   body { background: #fff; }
   .panel { break-inside: avoid; box-shadow: none; border-color: #ccc; }
 }
+
+/* ── SortableJS 칸반 드래그 상태 ─────────────────── */
+#kanban.is-sorting .kcard { transition: transform .12s ease; }
+.kcard.is-ghost {
+  opacity: .42; background: var(--accent-soft, #eef2ff) !important;
+  outline: 1px dashed var(--accent, #2f5bff); outline-offset: -1px;
+}
+.kcard.is-chosen { box-shadow: 0 10px 26px rgba(12, 15, 22, .18); }
+.kcard.is-dragging { opacity: .95; transform: rotate(-.6deg) scale(1.01); }
+.col-body { min-height: 64px; }
+
+/* ── 채널 성과 차트 (Chart.js) ───────────────────── */
+#chartPanel { margin: 0 0 18px; }
+.chart-wrap { position: relative; height: 258px; }
+#chartPanel .form-note { margin-top: 8px; }
+
+/* ── 무료 AI 맛보기 ─────────────────────────────── */
+.free-status { margin: 6px 0 0; }
+.free-card {
+  margin: 8px 0 2px; padding: 10px 12px; border: 1px solid var(--line, #e7e8ea);
+  border-radius: 10px; background: var(--surface, #fff);
+}
+.free-card b { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+.free-card p { font-size: 11.5px; line-height: 1.6; margin: 0; }
+.free-card a { display: inline-block; margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--accent, #2f5bff); text-decoration: none; }
+.free-card a:hover { text-decoration: underline; }
