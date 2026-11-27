@@ -979,7 +979,7 @@
     const initial = (a.name || '?').trim().slice(0, 1);
     return '<article class="kcard' + (d.tone === 'late' ? ' is-late' : '') + '" draggable="true" data-id="' + esc(a.id) + '">' +
       '<div class="kc-top">' +
-        '<span class="' + avatarClass(a.channel) + '" aria-hidden="true">' + esc(initial) + '</span>' +
+        '<span class="' + avatarClass(a.channel) + '" aria-hidden="true" data-i18n-skip>' + esc(initial) + '</span>' +
         '<div class="kc-id">' +
           '<span class="kc-name" title="' + esc(a.name) + '">' + esc(a.name) + '</span>' +
           '<span class="kc-handle">' + esc(a.handle || C.channelLabel(a.channel)) + ' · ' + esc(C.channelShort(a.channel)) + '</span>' +
@@ -1085,7 +1085,7 @@
       const ch = C.channelById(a.channel);
       const initial = (a.name || '?').trim().slice(0, 1);
       return '<tr data-id="' + esc(a.id) + '">' +
-        '<td><div class="lt-person"><span class="' + avatarClass(a.channel) + '" aria-hidden="true">' + esc(initial) + '</span>' +
+        '<td><div class="lt-person"><span class="' + avatarClass(a.channel) + '" aria-hidden="true" data-i18n-skip>' + esc(initial) + '</span>' +
           '<span class="kc-id"><span class="lt-name">' + esc(a.name) + '</span><span class="lt-handle">' + esc(a.handle || '—') + '</span>' +
           (a.note ? '<span class="lt-note">' + esc(a.note) + '</span>' : '') + '</span></div></td>' +
         '<td><span class="ch-tag"><span class="chip-dot" style="--c:' + ch.color + '"></span>' + esc(ch.short) + '</span></td>' +
